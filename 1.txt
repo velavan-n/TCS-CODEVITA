@@ -1,0 +1,36 @@
+from collections import defaultdict
+from itertools import product
+
+def balance(compound):
+    """
+    Balance a chemical compound.
+
+    Args:
+        compound (str): The chemical compound.
+
+    Returns:
+        bool: True if the compound can be balanced, False otherwise.
+    """
+    elements = defaultdict(int)
+    for element in compound:
+        elements[element] += 1
+
+    valencies = {element: ord(element) - ord('A') + 1 for element in elements}
+
+    for multiples in product(*[range(1, valency + 1) for valency in valencies.values()]):
+        total = sum(multiple * valency for multiple, valency in zip(multiples, valencies.values()))
+        if total % 2 == 0:
+            return True
+
+    return False
+
+def main():
+    compounds = ['AG', 'CG', 'ZO']
+    for compound in compounds:
+        if balance(compound):
+            print(compound)
+        else:
+            print('Not Possible')
+
+if __name__ == '__main__':
+    main()
